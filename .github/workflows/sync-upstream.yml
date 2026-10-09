@@ -1,0 +1,25 @@
+# Fork-only: merge BayramAnnakov/claude-reflect into this fork's main daily.
+# A conflict fails the run, and GitHub emails the failure.
+name: Sync upstream
+
+on:
+  schedule:
+    - cron: '0 6 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - run: |
+          git config user.name github-actions
+          git config user.email github-actions@users.noreply.github.com
+          git fetch https://github.com/BayramAnnakov/claude-reflect.git main
+          git merge --no-edit FETCH_HEAD
+          git push
