@@ -354,7 +354,7 @@ export const register: Register = (on, options) => {
     const root = await $.session.root()
     const rules = (await read($, savedThisSession)).filter(r => r.scope === 'global' || r.project === root)
     if (rules.length === 0) return composed
-    const text = ['Rules the user saved this session (they are in the user's rules files too; follow them):', ...rules.map(r => `- ${r.rule}`)].join('\n')
+    const text = ['Rules the user saved this session (they are saved to a rules file too; follow them):', ...rules.map(r => `- ${r.rule}`)].join('\n')
     return { sections: [...composed.sections, { id: 'reflect-mod:saved', text, scope: 'session' as const }] }
   })
 
