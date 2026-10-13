@@ -37,7 +37,7 @@ let model = 'haiku'
 let globalFile: string
 let projectFile: string
 let isDraining = false
-/** Saves to CLAUDE.md files run one after another inside this session. */
+/** Saves to rules files run one after another inside this session. */
 let writing: Promise<unknown> = Promise.resolve()
 const queue: string[] = []
 
@@ -277,7 +277,7 @@ async function decide($: EngineInterface, id: string, status: Learning['status']
   await refreshBand($)
 }
 
-/** Writes the rule to the CLAUDE.md the button names, after reading it again just before the write. */
+/** Writes the rule to the file the button names, after reading it again just before the write. */
 async function saveTo($: EngineInterface, l: Learning, scope: 'global' | 'project') {
   const job = writing.then(async () => {
     const latest = (await items($)).find(one => one.id === l.id)
@@ -354,7 +354,7 @@ export const register: Register = (on, options) => {
     const root = await $.session.root()
     const rules = (await read($, savedThisSession)).filter(r => r.scope === 'global' || r.project === root)
     if (rules.length === 0) return composed
-    const text = ['Rules the user saved this session (they are in CLAUDE.md too; follow them):', ...rules.map(r => `- ${r.rule}`)].join('\n')
+    const text = ['Rules the user saved this session (they are in the user's rules files too; follow them):', ...rules.map(r => `- ${r.rule}`)].join('\n')
     return { sections: [...composed.sections, { id: 'reflect-mod:saved', text, scope: 'session' as const }] }
   })
 
